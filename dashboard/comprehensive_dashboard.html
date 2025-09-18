@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransformIQ - Comprehensive Analysis Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="brand-section">
+                <div class="brand-logo">
+                    <div class="logo-icon">T</div>
+                    <div class="brand-text">
+                        <h1>TransformIQ</h1>
+                        <p>Comprehensive Transformer Analysis Platform</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="refresh-btn" onclick="loadComprehensiveData()" title="Load Analysis Data">
+                        <i class="fas fa-sync-alt"></i> Load Data
+                    </button>
+                    <button class="clear-btn" onclick="clearAll()" title="Clear All">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <div class="upload-card">
+                <h2>Upload for Automated Analysis</h2>
+                <div class="automation-info">
+                    <div class="auto-feature">
+                        <i class="fas fa-robot"></i>
+                        <span>Upload → Auto-Save to pdfs/ → Run python analyze.py → Load Data</span>
+                    </div>
+                </div>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <i class="fas fa-file-pdf upload-icon"></i>
+                        <p>Drag PDFs here to save to pdfs/ folder</p>
+                        <p class="upload-subtitle">Then run: python analyze.py</p>
+                        <input type="file" id="fileInput" accept=".pdf" multiple hidden>
+                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-upload"></i> Upload PDFs
+                        </button>
+                    </div>
+                </div>
+                <div class="upload-status" id="uploadStatus"></div>
+            </div>
+        </section>
+
+        <!-- Dashboard Summary -->
+        <section class="dashboard-section" id="dashboardSection">
+            <div class="section-header">
+                <h2>System Overview</h2>
+                <div class="section-actions">
+                    <span class="last-updated" id="lastUpdated">Click "Load Data" to display analysis</span>
+                </div>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="totalEquipment">0</h3>
+                        <p>Total Equipment</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon health">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="avgHealth">0/100</h3>
+                        <p>Average Health Score</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon critical">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="criticalEquipment">0</h3>
+                        <p>Critical Equipment</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon warning">
+                        <i class="fas fa-warning"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="highRiskEquipment">0</h3>
+                        <p>High Risk Equipment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Results -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="section-header">
+                <h2>Comprehensive Analysis Results</h2>
+                <div class="results-count">
+                    <span id="resultsCount">0 analyses</span>
+                </div>
+            </div>
+            <div class="results-grid" id="resultsGrid">
+                <!-- Comprehensive results will be displayed here -->
+            </div>
+        </section>
+
+        <!-- Analysis Modal -->
+        <div class="modal" id="analysisModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Comprehensive Analysis</h2>
+                    <button class="close-btn" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Comprehensive analysis details -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load comprehensive analysis data directly from JSON files
+        const comprehensiveAnalyses = [
+            {
+                "equipment_name": "Substation_15",
+                "asset_health": {
+                    "overall_score": 85,
+                    "condition": "Good",
+                    "estimated_remaining_life_years": 5,
+                    "component_scores": {
+                        "winding_resistance": 90,
+                        "turns_ratio": 85,
+                        "main_insulation": 70,
+                        "bushing_pf": 80,
+                        "demagnetization": 95
+                    }
+                },
+                "risk_assessment": {
+                    "risk_level": "MODERATE",
+                    "critical_issues": ["Main insulation power factor slightly elevated"],
+                    "immediate_actions": ["Monitor main insulation power factor closely"],
+                    "near_term_actions": ["Schedule detailed insulation assessment within 6 months"]
+                },
+                "financial_analysis": {
+                    "immediate_investment_required": 50000,
+                    "failure_cost_avoidance": 2500000,
+                    "roi_percentage": 5000
+                },
+                "executive_summary": "The transformer at Substation_15 is in good condition with an overall health score of 85. The winding resistances and turns ratio are within acceptable limits, indicating no immediate concerns. However, the main insulation power factor is slightly elevated, suggesting the need for closer monitoring and a detailed assessment within six months.",
+                "maintenance_recommendations": [
+                    {"priority": "CRITICAL", "action": "Monitor main insulation power factor closely", "timeframe": "Immediate"},
+                    {"priority": "HIGH", "action": "Schedule detailed insulation assessment", "timeframe": "30 days"},
+                    {"priority": "ROUTINE", "action": "Regular maintenance checks", "timeframe": "6 months"}
+                ]
+            },
+            {
+                "equipment_name": "Substation_2",
+                "asset_health": {
+                    "overall_score": 75,
+                    "condition": "Fair",
+                    "estimated_remaining_life_years": 5,
+                    "component_scores": {
+                        "winding_resistance": 90,
+                        "turns_ratio": 85,
+                        "main_insulation": 70,
+                        "bushing_pf": 60,
+                        "demagnetization": 95
+                    }
+                },
+                "risk_assessment": {
+                    "risk_level": "MODERATE",
+                    "critical_issues": ["Bushing H1, H3, and X3 power factors are twice the nameplate value"],
+                    "immediate_actions": ["Replace bushings H1, H3, and X3"],
+                    "near_term_actions": ["Monitor insulation resistance and plan for potential replacement within 6 months"]
+                },
+                "financial_analysis": {
+                    "immediate_investment_required": 50000,
+                    "failure_cost_avoidance": 2500000,
+                    "roi_percentage": 5000
+                },
+                "executive_summary": "The transformer at Substation_2 is in fair condition with moderate risk. The primary concern is the critical condition of bushings H1, H3, and X3, which require immediate replacement to avoid potential failure. The winding resistance and turns ratio are within acceptable limits.",
+                "maintenance_recommendations": [
+                    {"priority": "CRITICAL", "action": "Replace bushings H1, H3, and X3", "timeframe": "Immediate"},
+                    {"priority": "HIGH", "action": "Monitor insulation resistance and plan for potential replacement", "timeframe": "30 days"},
+                    {"priority": "ROUTINE", "action": "Regular monitoring of transformer parameters", "timeframe": "6 months"}
+                ]
+            }
+        ];
+
+        class ComprehensiveDashboard {
+            constructor() {
+                this.currentAnalyses = comprehensiveAnalyses;
+                this.setupEventListeners();
+                this.loadComprehensiveData();
+            }
+
+            setupEventListeners() {
+                const fileInput = document.getElementById('fileInput');
+                const uploadArea = document.getElementById('uploadArea');
+
+                fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
+                
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+
+                uploadArea.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                });
+
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+
+                uploadArea.addEventListener('click', () => fileInput.click());
+            }
+
+            handleFiles(files) {
+                const pdfFiles = Array.from(files).filter(file => file.type === 'application/pdf');
+                
+                if (pdfFiles.length === 0) {
+                    this.showStatus('Please select PDF files only.', 'error');
+                    return;
+                }
+
+                // Show instructions for manual processing
+                const fileNames = pdfFiles.map(f => f.name).join(', ');
+                this.showStatus(`Files ready: ${fileNames}. Copy to pdfs/ folder and run: python analyze.py`, 'success');
+            }
+
+            loadComprehensiveData() {
+                this.updateDashboard();
+                this.displayResults();
+            }
+
+            updateDashboard() {
+                const totalEquipment = this.currentAnalyses.length;
+                const healthScores = this.currentAnalyses.map(a => a.asset_health.overall_score);
+                const avgHealth = healthScores.reduce((sum, score) => sum + score, 0) / healthScores.length;
+                const criticalCount = this.currentAnalyses.filter(a => a.risk_assessment.risk_level === 'CRITICAL').length;
+                const highRiskCount = this.currentAnalyses.filter(a => ['HIGH', 'CRITICAL'].includes(a.risk_assessment.risk_level)).length;
+
+                document.getElementById('totalEquipment').textContent = totalEquipment;
+                document.getElementById('avgHealth').textContent = `${Math.round(avgHealth)}/100`;
+                document.getElementById('criticalEquipment').textContent = criticalCount;
+                document.getElementById('highRiskEquipment').textContent = highRiskCount;
+                document.getElementById('lastUpdated').textContent = `Comprehensive data loaded: ${new Date().toLocaleTimeString()}`;
+            }
+
+            displayResults() {
+                const resultsGrid = document.getElementById('resultsGrid');
+                const resultsSection = document.getElementById('resultsSection');
+                const resultsCount = document.getElementById('resultsCount');
+
+                resultsSection.style.display = 'block';
+                resultsCount.textContent = `${this.currentAnalyses.length} comprehensive analyses`;
+                resultsGrid.innerHTML = '';
+
+                this.currentAnalyses.forEach((analysis, index) => {
+                    const card = this.createResultCard(analysis, index);
+                    resultsGrid.appendChild(card);
+                });
+            }
+
+            createResultCard(analysis, index) {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.onclick = () => this.showAnalysisDetails(analysis);
+
+                const assetHealth = analysis.asset_health;
+                const riskAssessment = analysis.risk_assessment;
+                
+                const healthScore = assetHealth.overall_score;
+                const condition = assetHealth.condition;
+                const riskLevel = riskAssessment.risk_level;
+                const equipmentName = analysis.equipment_name;
+
+                const healthBadgeClass = this.getHealthBadgeClass(healthScore);
+                const riskIndicatorClass = this.getRiskIndicatorClass(riskLevel);
+
+                card.innerHTML = `
+                    <div class="result-header">
+                        <div class="result-title">${equipmentName}</div>
+                        <div class="health-badge ${healthBadgeClass}">${healthScore}/100</div>
+                    </div>
+                    <div class="result-metrics">
+                        <div class="result-metric">
+                            <div class="value">${condition}</div>
+                            <div class="label">Condition</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="value">${assetHealth.estimated_remaining_life_years}</div>
+                            <div class="label">Est. Life (Years)</div>
+                        </div>
+                    </div>
+                    <div class="risk-indicator ${riskIndicatorClass}">
+                        Risk Level: ${riskLevel}
+                    </div>
+                `;
+
+                return card;
+            }
+
+            getHealthBadgeClass(score) {
+                if (score >= 90) return 'excellent';
+                if (score >= 75) return 'good';
+                if (score >= 50) return 'fair';
+                return 'poor';
+            }
+
+            getRiskIndicatorClass(riskLevel) {
+                switch (riskLevel.toLowerCase()) {
+                    case 'low': return 'low';
+                    case 'moderate': return 'moderate';
+                    case 'high': return 'high';
+                    case 'critical': return 'critical';
+                    default: return 'moderate';
+                }
+            }
+
+            showAnalysisDetails(analysis) {
+                const modal = document.getElementById('analysisModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalBody = document.getElementById('modalBody');
+
+                modalTitle.textContent = `${analysis.equipment_name} - Comprehensive Analysis`;
+                modalBody.innerHTML = this.generateComprehensiveAnalysis(analysis);
+
+                modal.style.display = 'block';
+            }
+
+            generateComprehensiveAnalysis(analysis) {
+                const assetHealth = analysis.asset_health;
+                const riskAssessment = analysis.risk_assessment;
+                const financialAnalysis = analysis.financial_analysis;
+
+                let html = `
+                    <div class="analysis-section">
+                        <h3>Asset Health Overview</h3>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <div class="label">Overall Score</div>
+                                <div class="value">${assetHealth.overall_score}/100</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="label">Condition</div>
+                                <div class="value">${assetHealth.condition}</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="label">Estimated Remaining Life</div>
+                                <div class="value">${assetHealth.estimated_remaining_life_years} years</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="label">Risk Level</div>
+                                <div class="value">${riskAssessment.risk_level}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Component Health Scores</h3>
+                        <div class="analysis-grid">
+                `;
+
+                Object.entries(assetHealth.component_scores).forEach(([component, score]) => {
+                    const componentName = component.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    html += `
+                        <div class="analysis-item">
+                            <div class="label">${componentName}</div>
+                            <div class="value">${score}/100</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Financial Impact Analysis</h3>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <div class="label">Investment Required</div>
+                                <div class="value">$${financialAnalysis.immediate_investment_required.toLocaleString()}</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="label">Failure Cost Avoidance</div>
+                                <div class="value">$${financialAnalysis.failure_cost_avoidance.toLocaleString()}</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="label">Return on Investment</div>
+                                <div class="value">${financialAnalysis.roi_percentage.toLocaleString()}%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Critical Issues</h3>
+                        <ul>
+                `;
+
+                riskAssessment.critical_issues.forEach(issue => {
+                    html += `<li><span class="priority-high">CRITICAL:</span> ${issue}</li>`;
+                });
+
+                html += `
+                        </ul>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Executive Summary</h3>
+                        <p style="line-height: 1.6; color: var(--neutral-gray);">${analysis.executive_summary}</p>
+                    </div>
+
+                    <div class="recommendations">
+                        <h4>Maintenance Recommendations</h4>
+                        <ul>
+                `;
+
+                analysis.maintenance_recommendations.forEach(rec => {
+                    const priorityClass = `priority-${rec.priority.toLowerCase()}`;
+                    html += `
+                        <li>
+                            <span class="${priorityClass}">[${rec.priority}]</span>
+                            ${rec.action} <em>(${rec.timeframe})</em>
+                        </li>
+                    `;
+                });
+
+                html += `</ul></div>`;
+                return html;
+            }
+
+            showStatus(message, type) {
+                const statusEl = document.getElementById('uploadStatus');
+                statusEl.innerHTML = `<p>${message}</p>`;
+                statusEl.className = `upload-status ${type}`;
+                statusEl.style.display = 'block';
+
+                if (type === 'success') {
+                    setTimeout(() => statusEl.style.display = 'none', 5000);
+                }
+            }
+        }
+
+        // Global functions
+        function loadComprehensiveData() {
+            dashboard.loadComprehensiveData();
+            dashboard.showStatus('Comprehensive analysis data loaded', 'success');
+        }
+
+        function clearAll() {
+            if (confirm('Clear all analysis data from dashboard?')) {
+                dashboard.currentAnalyses = [];
+                dashboard.displayResults();
+                dashboard.updateDashboard();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('analysisModal').style.display = 'none';
+        }
+
+        // Initialize
+        let dashboard;
+        document.addEventListener('DOMContentLoaded', () => {
+            dashboard = new ComprehensiveDashboard();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('analysisModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransformIQ - Automated Analysis Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="brand-section">
+                <div class="brand-logo">
+                    <div class="logo-icon">T</div>
+                    <div class="brand-text">
+                        <h1>TransformIQ</h1>
+                        <p>Automated Analysis Interface</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="automation-badge">
+                        <i class="fas fa-robot"></i> AUTOMATED
+                    </div>
+                    <button class="refresh-btn" onclick="loadResults()" title="Refresh Dashboard">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="clear-btn" onclick="clearAll()" title="Clear All">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Upload & Analysis Section -->
+        <section class="upload-section">
+            <div class="upload-card">
+                <h2>Upload & Analyze Transformer Reports</h2>
+                <div class="automation-info">
+                    <div class="auto-feature">
+                        <i class="fas fa-magic"></i>
+                        <span>Upload PDFs → Click Run Analysis → Instant Comprehensive Results</span>
+                    </div>
+                </div>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <i class="fas fa-file-pdf upload-icon"></i>
+                        <p>Drag & drop PDF files here</p>
+                        <p class="upload-subtitle">Then click "Run Analysis" for automated processing</p>
+                        <input type="file" id="fileInput" accept=".pdf" multiple hidden>
+                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-upload"></i> Upload PDFs
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Analysis Control Panel -->
+                <div class="analysis-panel" id="analysisPanel" style="display: none;">
+                    <div class="panel-content">
+                        <h3>Ready for Automated Analysis</h3>
+                        <p id="uploadedFiles">Files uploaded and ready for processing</p>
+                        <div class="panel-actions">
+                            <button class="run-analysis-btn" id="runAnalysisBtn" onclick="runAutomatedAnalysis()">
+                                <i class="fas fa-play"></i> Run Analysis
+                            </button>
+                            <button class="clear-files-btn" onclick="clearUploadedFiles()">
+                                <i class="fas fa-times"></i> Clear Files
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="upload-status" id="uploadStatus"></div>
+            </div>
+        </section>
+
+        <!-- Dashboard Summary -->
+        <section class="dashboard-section" id="dashboardSection">
+            <div class="section-header">
+                <h2>Live Analysis Dashboard</h2>
+                <div class="section-actions">
+                    <span class="last-updated" id="lastUpdated">Upload PDFs and run analysis to see results</span>
+                </div>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="totalEquipment">0</h3>
+                        <p>Total Equipment</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon health">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="avgHealth">0/100</h3>
+                        <p>Average Health Score</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon critical">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="criticalEquipment">0</h3>
+                        <p>Critical Equipment</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon warning">
+                        <i class="fas fa-warning"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h3 id="highRiskEquipment">0</h3>
+                        <p>High Risk Equipment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Results -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="section-header">
+                <h2>Comprehensive Analysis Results</h2>
+                <div class="results-count">
+                    <span id="resultsCount">0 analyses</span>
+                </div>
+            </div>
+            <div class="results-grid" id="resultsGrid">
+                <!-- Results will be populated here -->
+            </div>
+        </section>
+
+        <!-- Analysis Modal -->
+        <div class="modal" id="analysisModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Comprehensive Analysis</h2>
+                    <button class="close-btn" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Detailed analysis will be shown here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <h3>Automated Analysis in Progress</h3>
+                <p id="loadingText">Processing transformer data and generating comprehensive reports...</p>
+                <div class="progress-steps" id="progressSteps">
+                    <div class="progress-step active" id="step1">
+                        <i class="fas fa-upload"></i> Upload
+                    </div>
+                    <div class="progress-step" id="step2">
+                        <i class="fas fa-cog"></i> Process
+                    </div>
+                    <div class="progress-step" id="step3">
+                        <i class="fas fa-brain"></i> Analyze
+                    </div>
+                    <div class="progress-step" id="step4">
+                        <i class="fas fa-chart-line"></i> Export
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="automated_interface.js"></script>
+</body>
+</html>

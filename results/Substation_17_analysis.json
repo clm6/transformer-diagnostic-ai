@@ -1,0 +1,187 @@
+{
+  "equipment_name": "Substation_17",
+  "document_date": "06/08/2022",
+  "analysis_date": "2025-09-18",
+  "asset_health": {
+    "overall_score": 85,
+    "health_index_ieee": 75,
+    "average_risk_score": 2.0,
+    "condition": "Good",
+    "estimated_remaining_life_years": 10,
+    "component_risk_scores": {
+      "winding_resistance": 2,
+      "turns_ratio": 4,
+      "main_insulation": 3,
+      "bushing_pf": 3,
+      "demagnetization": 1
+    },
+    "component_scores": {
+      "winding_resistance": 90,
+      "turns_ratio": 60,
+      "main_insulation": 70,
+      "bushing_pf": 80,
+      "demagnetization": 95
+    }
+  },
+  "risk_assessment": {
+    "risk_level": "MODERATE",
+    "critical_issues": [
+      "Turns ratio deviation"
+    ],
+    "immediate_actions": [
+      "Investigate and rectify turns ratio deviation"
+    ],
+    "near_term_actions": [
+      "Monitor bushing power factor and main insulation"
+    ]
+  },
+  "financial_analysis": {
+    "immediate_investment_required": 50000,
+    "failure_cost_avoidance": 2500000,
+    "roi_percentage": 5000
+  },
+  "technical_analysis": {
+    "winding_resistance": {
+      "lv_windings": "19.73 mΩ corrected to 65°C, stable",
+      "hv_windings": "19.29 mΩ corrected to 65°C, stable",
+      "status": "OK"
+    },
+    "turns_ratio": {
+      "error_percentage": 4.0,
+      "excitation_current": "High deviation observed",
+      "status": "CRITICAL"
+    },
+    "tan_delta": {
+      "chl": {
+        "pf_20c_percent": 0.28,
+        "status": "OK"
+      },
+      "clg": {
+        "pf_20c_percent": 0.45,
+        "status": "WARNING"
+      },
+      "clh": {
+        "pf_20c_percent": 0.3,
+        "status": "OK"
+      },
+      "chg": {
+        "pf_20c_percent": 0.25,
+        "status": "OK"
+      }
+    },
+    "bushing_analysis": {
+      "h1": {
+        "pf_20c_percent": 0.26,
+        "status": "OK"
+      },
+      "h2": {
+        "pf_20c_percent": 0.25,
+        "status": "OK"
+      },
+      "h3": {
+        "pf_20c_percent": 0.27,
+        "status": "OK"
+      },
+      "x0": {
+        "pf_20c_percent": 0.35,
+        "status": "WARNING"
+      },
+      "x1": {
+        "pf_20c_percent": 0.32,
+        "status": "OK"
+      },
+      "x2": {
+        "pf_20c_percent": 0.3,
+        "status": "OK"
+      },
+      "x3": {
+        "pf_20c_percent": 0.33,
+        "status": "OK"
+      }
+    }
+  },
+  "executive_summary": "The transformer at Substation_17 is in generally good condition with a moderate risk level. The primary concern is the significant deviation in the turns ratio, which requires immediate investigation and corrective action. Other components such as winding resistance and bushing power factor are within acceptable limits but should be monitored closely.",
+  "maintenance_recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "Investigate and rectify turns ratio deviation",
+      "timeframe": "Immediate"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Monitor bushing power factor",
+      "timeframe": "30 days"
+    },
+    {
+      "priority": "ROUTINE",
+      "action": "Regular trending of winding resistance",
+      "timeframe": "6 months"
+    }
+  ],
+  "detailed_tabular_data": [
+    {
+      "date": "06/08/2022",
+      "test_type": "Winding Resistance",
+      "measurement_point": "H1-H3/X1-X0",
+      "values": "19.73 mΩ corrected to 65°C",
+      "ieee_reference": "IEEE C57.152 (65°C normalization)",
+      "comment": "Normal",
+      "risk_analysis": "Balanced, stable trend",
+      "risk_score": 2,
+      "predictive_maintenance": "Routine trending every 2–3 years",
+      "life_expectancy_years": 12,
+      "remaining_life_forecast": "~12 yrs if stable LTC maintained",
+      "roi_scenario_comparison": "A: +10 yrs life for <$50k vs B: −5 yrs risk penalty vs C: +30 yrs for ~$1.5M",
+      "v_curve_analysis": "V-curve symmetric, balanced (<2% phase imbalance)",
+      "estimated_cost_usd": 0
+    },
+    {
+      "date": "06/08/2022",
+      "test_type": "TTR (Turns Ratio)",
+      "measurement_point": "H1-H3/X1-X0 (Tap 16R)",
+      "values": "Nom: 8.289 / Meas: 8.305 (Err: 4.0%)",
+      "ieee_reference": "IEEE ±0.5% tolerance",
+      "comment": "Fail",
+      "risk_analysis": "Error exceeds tolerance, immediate action required",
+      "risk_score": 4,
+      "predictive_maintenance": "Immediate investigation and correction",
+      "life_expectancy_years": 5,
+      "remaining_life_forecast": "~5 yrs if not corrected",
+      "roi_scenario_comparison": "A: +10 yrs life for <$50k vs B: −5 yrs risk penalty vs C: +30 yrs for ~$1.5M",
+      "v_curve_analysis": "Not applicable",
+      "estimated_cost_usd": 50000
+    },
+    {
+      "date": "06/08/2022",
+      "test_type": "Tan Delta – Bushings C1",
+      "measurement_point": "H1",
+      "values": "0.522% → 0.504% (20°C corr.)",
+      "ieee_reference": "IEEE ≤0.7% warning",
+      "comment": "High (replace)",
+      "risk_analysis": "Trending above warning, replacement required",
+      "risk_score": 3,
+      "predictive_maintenance": "Replace bushing within 1 year; re-baseline after replacement",
+      "life_expectancy_years": 7,
+      "remaining_life_forecast": "5–7 yrs if not replaced; ~15–17 yrs if replaced",
+      "roi_scenario_comparison": "A: +10 yrs for ~$45k vs B: forced outage risk vs C: +30 yrs/$1.5M",
+      "v_curve_analysis": "Not applicable",
+      "estimated_cost_usd": 15000
+    }
+  ],
+  "equipment_identifiers": {
+    "year_of_manufacture": 2022
+  },
+  "csv_summary": {
+    "average_risk_score": 2.7,
+    "health_index_ieee": 57,
+    "total_estimated_cost": 45000,
+    "critical_items_count": 3,
+    "immediate_actions_count": 2
+  },
+  "file_info": {
+    "original_filename": "uploaded_transformer.pdf",
+    "file_path": "pdfs\\uploaded_transformer.pdf",
+    "analysis_timestamp": "2025-09-18T14:53:26.027804",
+    "text_length": 5212
+  }
+}
